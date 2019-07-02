@@ -12,43 +12,21 @@ module State = struct (*Custom module called State*)
     If I want to use a cursor, I dont need velocity but only a position
     tracker and way to change position.*)
   (*Initializes the cursor in the middle of the screen given size of 
-    the screen*)*)
+    the screen *)
   let make (x,y) =
-    (0.5 *. float x, 0.5 *. float y)
+     (0, 0)
 
   (*He has this push function to alter the ball over time. Maybe I can
     use it to "push" the cursor?*)
-  let push (fx, fy) dt state =
-    let (x, y, vx, vy) = state in
-    (x, y, vx +. fx*.dt, vy +. fy*.dt)
+  (* Push cursor position by (fx, fy)*)
+  let push (fx, fy) state =
+    let (x, y) = state in
+    (x + fx, y + fy)
 
   (* I wont be needing to update over time like the prof's ex. 
      I only need to update once for a valid direction input*)
-  let update (w, h) dt st =
-    let (x, y, vx, vy) = st in
-
-    (* gravity *)
-    let gy = -300.0 in
-    let vy = vy +. gy*.dt in
-
-    (* displacement *)
-    let x = x +. vx*.dt in
-    let y = y +. vy*.dt in
-
-    (* bounce off the walls *)
-    let dissipation = 0.95 in
-    if x < 0.0 then
-      (0.0, y, -.vx *. dissipation, vy)
-    else if x > float w then
-      (float w, y, -.vx *. dissipation, vy)
-    else if y < 0.0 then
-      (x, 0.0, vx, -.vy *. dissipation)
-    else if y > float h then
-      (x, float h, vx, -.vy *. dissipation)
-    else
-      (x, y, vx, vy)
-
-
+(*Actually.. I dont think I even need change over time. Push takes care of
+taking input and changing position*)
 end
 
 (* event type to take user input *)
@@ -69,40 +47,67 @@ let get_event () =
   end else
     None
 
+
 let draw state = 
   (* BG gets drawn first and everything else overlayed on top*)
   (* Draw white background the size of the screen from bottom left *)
-  Graphics.set_color white;
+  Graphics.set_color Graphics.white;
   Graphics.fill_rect 0 0 (Graphics.size_x()) (Graphics.size_y());
 
   (*I want to draw the cursor here*)
-  ()
+  let (x, y) = state in
+  Graphics.set_color 0x7D8BCF;
+  Graphics.set_line_width 3;
+  Graphics.draw_rect x y ((Graphics.size_x()-2)/10) ((Graphics.size_y()-2)/10);
+  Graphics.set_color Graphics.black;
+  Graphics.draw_rect x y (Graphics.size_x()/10) (Graphics.size_y()/10);
+  Graphics.synchronize()
 
 let () =
-  Graphics.open_graph " 500x500"; (*1 grid=50x50*)
+  Graphics.open_graph " 1000x1000";
+  Graphics.auto_synchronize false;
   at_exit Graphics.close_graph;
 
+  (* A square is 1/10 of the total size*)
+  let unit = Graphics.size_x()/10 in
+
+ 
   (*In this function the prof had time_prev to track timestamps for
     FPS tracking and st for state tracking. I don't think time_prev
     is necessary.. maybe lol.*)
   let rec loop st =
+
+    (*I should probably keep this sleep so I dont blow up my Pi lol*)
+    Unix.sleep 2;
+
     match get_event () with
     | Some Exit -> ()
     | opt ->
-	let st2 = (*not sure what this does*)
+	let st2 = (*I needed to add the %! because it wouldn't print otherwise :/ *)
 	  match opt with
 	  | None -> st (*you're returning the "st" variable?*)
-	  | Some Left -> Printf.printf "Left\n" (*do nothing for now*)
-	  | Some Up ->  Printf.printf "Up\n"
-	  | Some Right ->  Printf.printf "Right\n"
-	  | Some Down ->  Printf.printf "Down\n"
+	  | Some Left -> Printf.printf "Left\n%!";
+		State.push (-unit,0) st
+	  | Some Up -> Printf.printf "Up\n%!";
+		State.push (0,unit) st
+	  | Some Right -> Printf.printf "Right\n%!";
+		State.push (unit,0) st
+	  | Some Down -> Printf.printf "Down\n%!";
+		State.push (0,-unit) st
 	  | Some _ -> st
 	in
 
 	(*he has a function here to update game state over time
 	  with what I assume to be the change from the match he has prev
 	  to this*)
-	let w = Graphics.size_x () in
-	let h = Graphics.size_y () in
-	let st3 = State.update (w, h)
 
+	(*draw*)
+	draw st2;
+
+	(*calling loop again*)
+	loop st2
+  in
+  let w = Graphics.size_x () in
+  let h = Graphics.size_y () in
+
+  loop (State.make (w,h))

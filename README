@@ -40,9 +40,10 @@ Thing's that would be awesome but I probably won't be able to implement in time:
 	
 
 Initial Steps:
-[ ] Create a 10 x 10 grid to display game elements
+[- ] Create a 10 x 10 grid to display game elements
   [ ] A data structure to keep track of the grid and it's contents
 [ ] Create a unit structure
   [ ] Create first unit
 [ ] Learn how to use github
-
+[X] Create basic cursor
+  [X] Implement user input

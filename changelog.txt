@@ -1,0 +1,28 @@
+I figured I should keep a more detailed log of my changes to make it easier
+for the professor to see what changed and so I myself can see the progress.
+
+7/1/19 1:27AM
++I got a rudementary version of the cursor implemented. Which includes drawing
+the screen and getting user input "real time". 
+
+To make this better I can stagger the drawing of the screen. Technically, 
+the image doesn't need to change until the user has input something 
+(unless I later want to implement idle animation for the units :D).
+
+If I'm doing this with only the Graphics module I have to layer the drawing 
+of the screen. The BG obviously goes on the bottom (terrain), then the unit,
+then the cursor with a transparent middle (only draw the edges the 
+cursor is highlighting).
+
+As for the hud with information I'd like to implement, maybe I can make the 
+screen a bit larger (by one grid), fill it with a neutral color and put text
+over it for the info about unit/terrain.
+
+I thought about using an image editor to draw the BG image png and importing
+it to the screen but that would mean the tiles would be set on loading.
+Instead, I think I should draw tile types (forest, ground, mountain/hill)
+and load them per tile on the grid. I think I can compile them all once, save
+it, and redraw when the screen updates.
+
+Since I'm at it I think I'll make the cursor just a border and commit the files.
+
