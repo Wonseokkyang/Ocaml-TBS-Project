@@ -18,10 +18,15 @@ module State = struct (*Custom module called State*)
 
   (*He has this push function to alter the ball over time. Maybe I can
     use it to "push" the cursor?*)
-  (* Push cursor position by (fx, fy)*)
-  let push (fx, fy) state =
+  (* Push cursor position by (fx, fy) unless it's at the window boundry*)
+  let push (w,h) (fx, fy) state =
     let (x, y) = state in
-    (x + fx, y + fy)
+      if (x + fx < 0) then      (0, y + fy)
+      else if (x + fx >= w) then (x, y + fy)
+      else if (y + fy < 0) then (x + fx, 0)
+      else if (y + fy >= h) then (x + fx, y)
+      else 
+	(x + fx, y + fy)
 
   (* I wont be needing to update over time like the prof's ex. 
      I only need to update once for a valid direction input*)
@@ -64,13 +69,14 @@ let draw state =
   Graphics.synchronize()
 
 let () =
-  Graphics.open_graph " 1000x1000";
+  Graphics.open_graph " 500x500";
   Graphics.auto_synchronize false;
   at_exit Graphics.close_graph;
 
   (* A square is 1/10 of the total size*)
   let unit = Graphics.size_x()/10 in
-
+  let w = Graphics.size_x() in
+  let h = Graphics.size_y() in
  
   (*In this function the prof had time_prev to track timestamps for
     FPS tracking and st for state tracking. I don't think time_prev
@@ -87,13 +93,13 @@ let () =
 	  match opt with
 	  | None -> st (*you're returning the "st" variable?*)
 	  | Some Left -> Printf.printf "Left\n%!";
-		State.push (-unit,0) st
+		State.push (w,h) (-unit,0) st
 	  | Some Up -> Printf.printf "Up\n%!";
-		State.push (0,unit) st
+		State.push (w,h) (0,unit) st
 	  | Some Right -> Printf.printf "Right\n%!";
-		State.push (unit,0) st
+		State.push (w,h) (unit,0) st
 	  | Some Down -> Printf.printf "Down\n%!";
-		State.push (0,-unit) st
+		State.push (w,h) (0,-unit) st
 	  | Some _ -> st
 	in
 
