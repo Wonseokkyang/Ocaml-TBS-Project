@@ -52,12 +52,69 @@ let get_event () =
   end else
     None
 
+(* Experimenting with the game board/tiles here *)
+
+(* terrain types to draw map tiles *)
+type terrain =
+  Default | Forest | Hills
+
+(* Board will be 10x10 for now *)
+(*   -----------------------------------------
+r9   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r8   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r7   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r6   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r5   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r4   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r3   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r2   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r1   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r0   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+      c0  c1  c2  c3  c4  c5  c6  c7  c8  c9 
+*)
+let board = 
+  let d = Default in
+  let f = Forest in
+  let h = Hills in
+(*r0*) [ [d; f; h; d; f; h; d; f; h; d]; 
+(*r1*)	 [d; f; h; d; f; h; d; f; h; d];
+(*r2*)   [d; f; h; d; f; h; d; f; h; d];
+(*r3*)	 [d; f; h; d; f; h; d; f; h; d];
+(*r4*)	 [d; f; h; d; f; h; d; f; h; d];
+(*r5*)	 [d; f; h; d; f; h; d; f; h; d];
+(*r6*)	 [d; f; h; d; f; h; d; f; h; d];
+(*r7*)	 [d; f; h; d; f; h; d; f; h; d];
+(*r8*)	 [d; f; h; d; f; h; d; f; h; d];
+(*r9*)	 [d; f; h; d; f; h; d; f; h; d]; ]
 
 let draw state = 
   (* BG gets drawn first and everything else overlayed on top*)
   (* Draw white background the size of the screen from bottom left *)
   Graphics.set_color Graphics.white;
   Graphics.fill_rect 0 0 (Graphics.size_x()) (Graphics.size_y());
+
+(*WIP Let's try drwing one tile: Default will be a beige color*)
+  (*if I want to draw r0,c0 *)
+  (* beige 999900, forest green 196619, charcoal grey 999999*)
+  let unit = Graphics.size_x()/10 in
+  let r = unit in
+  let c = unit in 
+  Graphics.set_color 0x999900;		(*tile base*)
+  Graphics.fill_rect r c unit unit;
+  (*tile boarder*)
+  Graphics.set_color Graphics.black;
+  Graphics.set_line_width 1;		(*tile boarder*)
+  Graphics.draw_rect r c unit unit; 
 
   (*I want to draw the cursor here*)
   let (x, y) = state in

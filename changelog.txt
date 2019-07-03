@@ -26,3 +26,13 @@ it, and redraw when the screen updates.
 
 Since I'm at it I think I'll make the cursor just a border and commit the files.
 
+7/3/19 6:32PM
++Added the boundry box so the users cursor can't be out of bounds. This
+change was made possible by adding a (w,h) param to the push function.
+
+7:39PM
++Made the 2D list to hold tile types and drew a single tile for testing. Now
+I have to make the position variable depending on the board list and the tile
+base color reflect the tile type. I'm commiting this now because my battery
+bank is getting low on power and I'm at a cafe.. I would hate to lose any 
+progress lol
