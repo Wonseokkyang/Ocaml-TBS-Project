@@ -116,6 +116,41 @@ let draw state =
   Graphics.set_line_width 1;		(*tile boarder*)
   Graphics.draw_rect r c unit unit; 
 
+  (* Draw game board here *)
+    let base_color terrain =
+	if terrain = Default then 
+	  Graphics.set_color 0x999900
+	else if terrain = Forest then
+	  Graphics.set_color 0x196619
+	else if terrain = Hills then
+	  Graphics.set_color 0x999999
+    in
+    let rec draw_row xpos ypos = function
+       | hd::tl -> 
+	base_color hd;
+	Graphics.fill_rect xpos ypos unit unit;		  
+	Graphics.set_color Graphics.black;
+	Graphics.set_line_width 1;
+	Graphics.draw_rect xpos ypos unit unit;
+	draw_row (xpos+unit) (ypos) tl
+       | [] -> ()
+    in
+    
+    let rec draw_board_aux ypos = function
+      | hd::tl -> begin
+		draw_row 0 ypos hd;
+		draw_board_aux (ypos+unit) tl;
+		end
+      | [] -> ()
+    in 
+
+    let draw_board gameboard = draw_board_aux 0 gameboard; 
+    in draw_board board;
+ 
+
+
+
+
   (*I want to draw the cursor here*)
   let (x, y) = state in
   Graphics.set_color 0x7D8BCF;

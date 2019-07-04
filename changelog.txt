@@ -36,3 +36,10 @@ I have to make the position variable depending on the board list and the tile
 base color reflect the tile type. I'm commiting this now because my battery
 bank is getting low on power and I'm at a cafe.. I would hate to lose any 
 progress lol
+
+8:49PM
++Drew the actual game tiles by taking a 2D list of terrain types. 
+As of now, the gameboard is being drawn every state update but it doesn't 
+have to be. It can be initialized once into a single image with blit_image
+maybe?? Anyways, I'm just super stoked it worked like the pseudocode from my
+notebook!
