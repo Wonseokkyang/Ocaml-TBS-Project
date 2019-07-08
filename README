@@ -3,7 +3,7 @@ Class: Functional Programming in Ocaml
 Date: June 26, 2019
 
 Project
-For this class I will be making a turnbased RPG using Ocaml and it's builtin
+For this class I will be making a turnbased RTS using Ocaml and it's builtin
 Graphics module. 
 I will also be learning how to use github!
 
@@ -45,6 +45,7 @@ Initial Steps:
   [X] Implemented 2D list to gameboard graphics
 [ ] Create a unit structure
   [ ] Create first unit
+    [X] Create first unit sprite
 [~] Learn how to use github
 [X] Create basic cursor
   [X] Implement user input

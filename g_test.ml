@@ -52,6 +52,13 @@ let get_event () =
   end else
     None
 
+(*Playing with unit types here*)
+type unit =
+  Melee | Range | Horse
+
+
+
+
 (* Experimenting with the game board/tiles here *)
 
 (* terrain types to draw map tiles *)
@@ -81,20 +88,20 @@ r1   | D | F | H | D | F | H | D | F | H | D |
 r0   | D | F | H | D | F | H | D | F | H | D |
      -----------------------------------------
       c0  c1  c2  c3  c4  c5  c6  c7  c8  c9   *)
-let board = 
+let board =
   let d = Default in
   let f = Forest in
   let h = Hills in
-(*r0*) [ [h; h; h; h; h; h; h; h; h; h]; 
-(*r1*)	 [h; d; d; d; h; f; f; f; f; h];
+(*r0*) [ [h; h; h; h; h; h; h; h; h; h];
+(*r1*)   [h; d; d; d; h; f; f; f; f; h];
 (*r2*)   [h; d; d; d; h; f; f; f; d; h];
-(*r3*)	 [h; d; d; d; h; f; d; d; f; h];
-(*r4*)	 [h; h; h; d; h; f; f; d; f; h];
-(*r5*)	 [h; f; f; d; f; f; f; d; f; h];
-(*r6*)	 [h; f; f; d; d; d; f; d; f; h];
-(*r7*)	 [h; f; f; f; d; d; d; d; f; h];
-(*r8*)	 [h; f; f; f; f; f; f; f; f; h];
-(*r9*)	 [h; h; h; h; h; h; h; h; h; h]; ]
+(*r3*)   [h; d; d; d; h; f; d; d; f; h];
+(*r4*)   [h; h; h; d; h; f; f; d; f; h];
+(*r5*)   [h; f; f; d; f; f; f; d; f; h];
+(*r6*)   [h; f; f; d; d; d; f; d; f; h];
+(*r7*)   [h; f; f; f; d; d; d; d; f; h];
+(*r8*)   [h; f; f; f; f; f; f; f; f; h];
+(*r9*)   [h; h; h; h; h; h; h; h; h; h]; ]
 
 let draw state = 
   (* BG gets drawn first and everything else overlayed on top*)
@@ -104,18 +111,27 @@ let draw state =
 
   (* Draw game board here *)
   let unit = Graphics.size_x()/10 in
-    let base_color terrain =
+    let base_color terrain xpos ypos=
 	if terrain = Default then 
 	  Graphics.set_color 0x999900
 	else if terrain = Forest then
 	  Graphics.set_color 0x196619
 	else if terrain = Hills then
-	  Graphics.set_color 0x999999
+	 (*(
+	  let test_draw =
+	    "img/terrain_test.png"
+	    |> Load_image.load_array
+	    |> Load_image.sub_image 0 0 (unit) (unit) (Some (0x00FFFF))
+	  in
+	  Graphics.draw_image test_draw xpos ypos
+	)*)
+	  
+	  Graphics.set_color 0x999999 
     in
 
     let rec draw_row xpos ypos = function
        | hd::tl -> 
-	base_color hd;
+	base_color hd xpos ypos; 
 	Graphics.fill_rect xpos ypos unit unit;		  
 	Graphics.set_color Graphics.black;
 	Graphics.set_line_width 1;
@@ -137,12 +153,21 @@ let draw state =
  
   (* Testing unit drawing here *)
   let test_draw =
-    Graphics.set_color Graphics.white;
     "img/knight.png"
     |> Load_image.load_array
     |> Load_image.sub_image 0 0 (unit)  (unit) (Some (0x00FFFF))
   in
   Graphics.draw_image test_draw 100 100;
+
+  (* Testing cpu unit drawing here *)
+  let test_draw2 =
+    "img/knight_bad.png"
+    |> Load_image.load_array
+    |> Load_image.sub_image 0 0 (unit)  (unit) (Some (0x00FFFF))
+  in
+  Graphics.draw_image test_draw2 700 100;
+  Graphics.draw_image test_draw2 700 200;
+  Graphics.draw_image test_draw2 800 100;
 
 
 
