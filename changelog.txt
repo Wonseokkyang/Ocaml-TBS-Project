@@ -43,3 +43,10 @@ As of now, the gameboard is being drawn every state update but it doesn't
 have to be. It can be initialized once into a single image with blit_image
 maybe?? Anyways, I'm just super stoked it worked like the pseudocode from my
 notebook!
+
+7/7/19 11:28PM
+I thought I had another week! Turns out tomorrow is the project presentation.. 
+FML I even requested a few extra days off next week so I can focus on the project..
+I should have paid attention to the due dates. ANYWAYS, now I'm trying to get a place holder
+for unit sprites to work. I thought it would be as simple as plugging them into imagelib
+and graphics but turns out size is a big problem.

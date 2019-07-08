@@ -80,22 +80,21 @@ r1   | D | F | H | D | F | H | D | F | H | D |
      -----------------------------------------
 r0   | D | F | H | D | F | H | D | F | H | D |
      -----------------------------------------
-      c0  c1  c2  c3  c4  c5  c6  c7  c8  c9 
-*)
+      c0  c1  c2  c3  c4  c5  c6  c7  c8  c9   *)
 let board = 
   let d = Default in
   let f = Forest in
   let h = Hills in
-(*r0*) [ [d; f; h; d; f; h; d; f; h; d]; 
-(*r1*)	 [d; f; h; d; f; h; d; f; h; d];
-(*r2*)   [d; f; h; d; f; h; d; f; h; d];
-(*r3*)	 [d; f; h; d; f; h; d; f; h; d];
-(*r4*)	 [d; f; h; d; f; h; d; f; h; d];
-(*r5*)	 [d; f; h; d; f; h; d; f; h; d];
-(*r6*)	 [d; f; h; d; f; h; d; f; h; d];
-(*r7*)	 [d; f; h; d; f; h; d; f; h; d];
-(*r8*)	 [d; f; h; d; f; h; d; f; h; d];
-(*r9*)	 [d; f; h; d; f; h; d; f; h; d]; ]
+(*r0*) [ [h; h; h; h; h; h; h; h; h; h]; 
+(*r1*)	 [h; d; d; d; h; f; f; f; f; h];
+(*r2*)   [h; d; d; d; h; f; f; f; d; h];
+(*r3*)	 [h; d; d; d; h; f; d; d; f; h];
+(*r4*)	 [h; h; h; d; h; f; f; d; f; h];
+(*r5*)	 [h; f; f; d; f; f; f; d; f; h];
+(*r6*)	 [h; f; f; d; d; d; f; d; f; h];
+(*r7*)	 [h; f; f; f; d; d; d; d; f; h];
+(*r8*)	 [h; f; f; f; f; f; f; f; f; h];
+(*r9*)	 [h; h; h; h; h; h; h; h; h; h]; ]
 
 let draw state = 
   (* BG gets drawn first and everything else overlayed on top*)
@@ -103,20 +102,8 @@ let draw state =
   Graphics.set_color Graphics.white;
   Graphics.fill_rect 0 0 (Graphics.size_x()) (Graphics.size_y());
 
-(*WIP Let's try drwing one tile: Default will be a beige color*)
-  (*if I want to draw r0,c0 *)
-  (* beige 999900, forest green 196619, charcoal grey 999999*)
-  let unit = Graphics.size_x()/10 in
-  let r = unit in
-  let c = unit in 
-  Graphics.set_color 0x999900;		(*tile base*)
-  Graphics.fill_rect r c unit unit;
-  (*tile boarder*)
-  Graphics.set_color Graphics.black;
-  Graphics.set_line_width 1;		(*tile boarder*)
-  Graphics.draw_rect r c unit unit; 
-
   (* Draw game board here *)
+  let unit = Graphics.size_x()/10 in
     let base_color terrain =
 	if terrain = Default then 
 	  Graphics.set_color 0x999900
@@ -125,6 +112,7 @@ let draw state =
 	else if terrain = Hills then
 	  Graphics.set_color 0x999999
     in
+
     let rec draw_row xpos ypos = function
        | hd::tl -> 
 	base_color hd;
@@ -147,7 +135,14 @@ let draw state =
     let draw_board gameboard = draw_board_aux 0 gameboard; 
     in draw_board board;
  
-
+  (* Testing unit drawing here *)
+  let test_draw =
+    Graphics.set_color Graphics.white;
+    "img/test.png"
+    |> Load_image.load_array
+    |> Load_image.sub_image 0 0 unit unit (Some 0x00FFFF)
+  in
+  Graphics.draw_image test_draw 100 100;
 
 
 
@@ -161,7 +156,7 @@ let draw state =
   Graphics.synchronize()
 
 let () =
-  Graphics.open_graph " 500x500";
+  Graphics.open_graph " 1000x1000";
   Graphics.auto_synchronize false;
   at_exit Graphics.close_graph;
 
