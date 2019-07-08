@@ -138,9 +138,9 @@ let draw state =
   (* Testing unit drawing here *)
   let test_draw =
     Graphics.set_color Graphics.white;
-    "img/test.png"
+    "img/knight.png"
     |> Load_image.load_array
-    |> Load_image.sub_image 0 0 unit unit (Some 0x00FFFF)
+    |> Load_image.sub_image 0 0 (unit)  (unit) (Some (0x00FFFF))
   in
   Graphics.draw_image test_draw 100 100;
 
