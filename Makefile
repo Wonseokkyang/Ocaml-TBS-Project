@@ -1,6 +1,6 @@
 
-main: load_image.ml g_test.ml
+game: load_image.ml g_test.ml
 	ocamlfind ocamlopt -package graphics,unix,imagelib -linkpkg -o $@ $^
 
 clean:
-	-rm main *.cmx *.cmi *.o
+	-rm game *.cmx *.cmi *.o
