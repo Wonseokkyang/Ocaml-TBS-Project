@@ -6,18 +6,10 @@
 (*I think this tracks the variable parts of the game like cursor, grid etc*)
 module State = struct (*Custom module called State*)
 
-  (* Initial cursor state?*)
-  (*in the prof's example, he had a ball that would change position and
-    velocty and this function held the x,y, and respective velocities.
-    If I want to use a cursor, I dont need velocity but only a position
-    tracker and way to change position.*)
-  (*Initializes the cursor in the middle of the screen given size of 
-    the screen *)
+  (*Initializes the cursor in bottom left corner*)
   let make (x,y) =
      (0, 0)
 
-  (*He has this push function to alter the ball over time. Maybe I can
-    use it to "push" the cursor?*)
   (* Push cursor position by (fx, fy) unless it's at the window boundry*)
   let push (w,h) (fx, fy) state =
     let (x, y) = state in
@@ -27,17 +19,15 @@ module State = struct (*Custom module called State*)
       else if (y + fy >= h) then (x + fx, y)
       else 
 	(x + fx, y + fy)
-
-  (* I wont be needing to update over time like the prof's ex. 
-     I only need to update once for a valid direction input*)
-(*Actually.. I dont think I even need change over time. Push takes care of
-taking input and changing position*)
 end
 
+
 (* event type to take user input *)
-(* Exit = q *)
+(* Exit = q 
+   Select = j
+   Cancel = k *)
 type event = 
-  Up | Down | Left | Right | Exit
+  Up | Down | Left | Right | Exit | Select | Cancel
 
 let get_event () = 
   if Graphics.key_pressed () then begin
@@ -48,18 +38,30 @@ let get_event () =
     | 'd' | 'D' -> Some Right
     | 's' | 'S' -> Some Down
     | 'q' | 'Q' -> Some Exit
+    | 'j' | 'J' -> Some Select
+    | 'k' | 'K' -> Some Cancel    
     | _ -> None
   end else
     None
 
+
 (*Playing with unit types here*)
-type unit =
-  Melee | Range | Horse
+(*
+  type unit =
+  Melee | Range | Horse | Default
+*)
+(*Playing with unit module here*)
+(*
+module Unit = struct
+  type  =
+    { hp : int;
+      atk : int;
+      range : int;
+      move : int;
+    };;
+end
+*)
 
-
-
-
-(* Experimenting with the game board/tiles here *)
 
 (* terrain types to draw map tiles *)
 type terrain =
@@ -150,6 +152,8 @@ let draw state =
 
     let draw_board gameboard = draw_board_aux 0 gameboard; 
     in draw_board board;
+
+
  
   (* Testing unit drawing here *)
   let test_draw =
@@ -171,7 +175,9 @@ let draw state =
 
 
 
-  (*I want to draw the cursor here*)
+
+
+  (* Draw a cursor with a transparent middle so you can see the tile below *)
   let (x, y) = state in
   Graphics.set_color 0x7D8BCF;
   Graphics.set_line_width 3;
@@ -182,6 +188,7 @@ let draw state =
 
 let () =
   Graphics.open_graph " 1000x1000";
+  (*This line added to solve screen flickering*)
   Graphics.auto_synchronize false;
   at_exit Graphics.close_graph;
 
@@ -190,9 +197,7 @@ let () =
   let w = Graphics.size_x() in
   let h = Graphics.size_y() in
  
-  (*In this function the prof had time_prev to track timestamps for
-    FPS tracking and st for state tracking. I don't think time_prev
-    is necessary.. maybe lol.*)
+
   let rec loop st =
 
     (*I should probably keep this sleep so I dont blow up my Pi lol*)
@@ -203,7 +208,7 @@ let () =
     | opt ->
 	let st2 = (*I needed to add the %! because it wouldn't print otherwise :/ *)
 	  match opt with
-	  | None -> st (*you're returning the "st" variable?*)
+	  | None -> st
 	  | Some Left -> Printf.printf "Left\n%!";
 		State.push (w,h) (-unit,0) st
 	  | Some Up -> Printf.printf "Up\n%!";
@@ -212,12 +217,12 @@ let () =
 		State.push (w,h) (unit,0) st
 	  | Some Down -> Printf.printf "Down\n%!";
 		State.push (w,h) (0,-unit) st
+	  | Some Select -> Printf.printf "Select\n%!";
+		st
+	  | Some Cancel -> Printf.printf "Cancel\n%!";
+		st
 	  | Some _ -> st
 	in
-
-	(*he has a function here to update game state over time
-	  with what I assume to be the change from the match he has prev
-	  to this*)
 
 	(*draw*)
 	draw st2;

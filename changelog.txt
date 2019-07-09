@@ -50,3 +50,34 @@ FML I even requested a few extra days off next week so I can focus on the projec
 I should have paid attention to the due dates. ANYWAYS, now I'm trying to get a place holder
 for unit sprites to work. I thought it would be as simple as plugging them into imagelib
 and graphics but turns out size is a big problem.
+
+7/9/19 4:57AM
++Added in the Select and Cancel type for user input.
+
+I was laying in bed and my mind kept running with ideas I wanted to try so I
+got up and decided to run with it. I initally wanted to make a record type
+for the units but then started thinking about how they would integrate with
+the game grid. Maybe I could change the list type of the grid to also hold
+unit type? Currently the gameboard is a 2D list of type terrain. If I change
+the list type to (terrain * unit) then I can draw the terrain and units on
+the screen at once..
+
+But then another problem arises. How about the relationship between the 
+cursor and the terrain/units? How would I translate the cursor position to
+the grid? 
+
+Here are some thoughts:
+  The cursor is a state of (x, y) coordinates. So if the cursor is at (0, 0)
+I know that it's highlighting the first element in the first list of terrain
+list or [ [0], _ ]. If the cursor is at (1unit, 0) of the grid, it's at 
+[ [1], _] of the board. 
+  So the ypos of the cursor is the n'th list of the list and the xpos is 
+the m'th element of the n'th list. If the list of terrain type was stored
+in an array that can be reffered to by index this would make selecting a 
+point on the board a whole lot easier..
+  I vaguely remember seeing an Array module somewhere.. Time to google!
+  So it turns out there is an Array module! :D but I've never used it before.
+If I want to use an array in the program, I'll have to make a bunch of 
+changes.. Let's test the Array module on utop before messing with the main
+program.
+
