@@ -56,6 +56,7 @@ Thing's that would be awesome but I probably won't be able to implement in time:
 Initial Steps:
 [-] Create a 10 x 10 grid to display game elements
   [X] A data structure to keep track of the grid and it's contents
+    [X] Basic terrain png
   [X] Implemented 2D list to gameboard graphics
 [ ] Create a unit structure
   [-] Create first unit

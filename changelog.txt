@@ -81,3 +81,9 @@ If I want to use an array in the program, I'll have to make a bunch of
 changes.. Let's test the Array module on utop before messing with the main
 program.
 
+7/10/19 12:37AM
+  So I looked into the Array module and played around with it in utop.
+Addressing an array matrix looks easy enough but I kinda want to try it with
+the list first.
+  Also, I figured out where I went wrong with loading the terrain png! I was
+able to get the mountain png to load.
