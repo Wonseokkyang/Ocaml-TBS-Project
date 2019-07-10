@@ -58,11 +58,17 @@ Initial Steps:
   [X] A data structure to keep track of the grid and it's contents
     [X] Basic terrain png
   [X] Implemented 2D list to gameboard graphics
+
 [ ] Create a unit structure
   [-] Create first unit
     [X] Create first unit sprite
+
 [~] Learn how to use github
+
 [X] Create basic cursor
   [X] Implement user input
   [X] Implement screen boundaries
   [X] Implement select and cancel 
+
+[ ] Fixing input lag (caused by constant png to image conversion)
+

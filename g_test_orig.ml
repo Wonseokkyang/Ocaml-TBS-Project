@@ -2,7 +2,7 @@
     parts work together **)
 
 (*Game state*)
-(* This tracks the variable parts of the game like cursor, grid etc*)
+(*I think this tracks the variable parts of the game like cursor, grid etc*)
 module State = struct (*Custom module called State*)
 
   (*Initializes the cursor in bottom left corner*)
@@ -62,17 +62,99 @@ end
 *)
 
 
-let draw board_img state = 
+(* terrain types to draw map tiles *)
+type terrain =
+  Default | Forest | Hills
+
+(* Board will be 10x10 for now *)
+(*   -----------------------------------------
+r9   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r8   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r7   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r6   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r5   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r4   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r3   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r2   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r1   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+r0   | D | F | H | D | F | H | D | F | H | D |
+     -----------------------------------------
+      c0  c1  c2  c3  c4  c5  c6  c7  c8  c9   *)
+let board =
+  let d = Default in
+  let f = Forest in
+  let h = Hills in
+(*r0*) [ [h; h; h; h; h; h; h; h; h; h];
+(*r1*)   [h; d; d; d; h; f; f; f; f; h];
+(*r2*)   [h; d; d; d; h; f; f; f; d; h];
+(*r3*)   [h; d; d; d; h; f; d; d; f; h];
+(*r4*)   [h; h; h; d; h; f; f; d; f; h];
+(*r5*)   [h; f; f; d; f; f; f; d; f; h];
+(*r6*)   [h; f; f; d; d; d; f; d; f; h];
+(*r7*)   [h; f; f; f; d; d; d; d; f; h];
+(*r8*)   [h; f; f; f; f; f; f; f; f; h];
+(*r9*)   [h; h; h; h; h; h; h; h; h; h]; ]
+
+let draw state = 
   (* BG gets drawn first and everything else overlayed on top*)
   (* Draw white background the size of the screen from bottom left *)
   Graphics.set_color Graphics.white;
   Graphics.fill_rect 0 0 (Graphics.size_x()) (Graphics.size_y());
 
-(*for testing *)
-  Graphics.draw_image board_img 0 0;
+  (* Draw game board here *)
+  let unit = Graphics.size_x()/10 in
+    let base_color terrain xpos ypos=
+	let draw_thing thing =
+	  "img/"^thing
+	  |> Load_image.load_array
+	  |> Load_image.sub_image 0 0 (unit) (unit) (Some (0x00FFFF))
+	in
+
+	if terrain = Default then (
+	  Graphics.set_color 0x999900;
+	  Graphics.fill_rect xpos ypos unit unit		  
+	)
+	else if terrain = Forest then 
+	  Graphics.draw_image (draw_thing "tree.png") xpos ypos
+	else if terrain = Hills then
+	  Graphics.draw_image (draw_thing "mountain.png") xpos ypos
+	  
+	 (* Graphics.set_color 0x999999 *)
+    in
+
+    let rec draw_row xpos ypos = function
+       | hd::tl -> 
+	base_color hd xpos ypos; 
+	Graphics.set_color Graphics.black;
+	Graphics.set_line_width 1;
+	Graphics.draw_rect xpos ypos unit unit;
+	draw_row (xpos+unit) (ypos) tl
+       | [] -> ()
+    in
+    
+    let rec draw_board_aux ypos = function
+      | hd::tl -> begin
+		draw_row 0 ypos hd;
+		draw_board_aux (ypos+unit) tl;
+		end
+      | [] -> ()
+    in 
+
+    let draw_board gameboard = draw_board_aux 0 gameboard; 
+    in draw_board board;
+
+
  
   (* Testing unit drawing here *)
-  let unit = Graphics.size_x()/10 in
   let test_draw =
     "img/knight.png"
     |> Load_image.load_array
@@ -90,6 +172,10 @@ let draw board_img state =
   Graphics.draw_image test_draw2 700 200;
   Graphics.draw_image test_draw2 800 100;
 
+
+
+
+
   (* Draw a cursor with a transparent middle so you can see the tile below *)
   let (x, y) = state in
   Graphics.set_color 0x7D8BCF;
@@ -99,25 +185,17 @@ let draw board_img state =
   Graphics.draw_rect x y (Graphics.size_x()/10) (Graphics.size_y()/10);
   Graphics.synchronize()
 
-
-	
-(**========================**)
-(**===== PROGRAM BODY =====**)
-(**========================**)
 let () =
   Graphics.open_graph " 1000x1000";
   (*This line added to solve screen flickering*)
   Graphics.auto_synchronize false;
   at_exit Graphics.close_graph;
 
-
   (* A square is 1/10 of the total size*)
   let unit = Graphics.size_x()/10 in
   let w = Graphics.size_x() in
   let h = Graphics.size_y() in
  
-  (* board_image *)
-  let board_image = Draw_screen.board_init Draw_screen.board in
 
   let rec loop st =
 
@@ -146,7 +224,7 @@ let () =
 	in
 
 	(*draw*)
-	draw board_image st2;
+	draw st2;
 
 	(*calling loop again*)
 	loop st2

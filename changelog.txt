@@ -87,3 +87,15 @@ Addressing an array matrix looks easy enough but I kinda want to try it with
 the list first.
   Also, I figured out where I went wrong with loading the terrain png! I was
 able to get the mountain png to load.
+
+7/11/19 2:00PM
+  After I implemented the forest png I noticed that the program was very slow.
+I think this is due to the fact that the whole background has to get processed at every screen update. I can fix this by either saving the processed
+pgn tiles into a Graphics image type or only letting the program run on user 
+input. It would be best to do both and I'd like to do both but for I'll start
+with the former.
+  The plan is to have the game board initialized once at the start of the 
+program and to save the processed "screencap" saved into board_image. This
+way, when the screen has to be redrawn I can just use board_image instead of
+reprocessing tiles over and over.
+  Lets give it a try!
