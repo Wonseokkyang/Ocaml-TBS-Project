@@ -114,23 +114,20 @@ let draw state =
   (* Draw game board here *)
   let unit = Graphics.size_x()/10 in
     let base_color terrain xpos ypos=
+	let draw_thing thing =
+	  "img/"^thing
+	  |> Load_image.load_array
+	  |> Load_image.sub_image 0 0 (unit) (unit) (Some (0x00FFFF))
+	in
+
 	if terrain = Default then (
 	  Graphics.set_color 0x999900;
 	  Graphics.fill_rect xpos ypos unit unit		  
 	)
-	else if terrain = Forest then (
-	  Graphics.set_color 0x196619;
- 	  Graphics.fill_rect xpos ypos unit unit		  
-	)
+	else if terrain = Forest then 
+	  Graphics.draw_image (draw_thing "tree.png") xpos ypos
 	else if terrain = Hills then
-	 (
-	  let test_draw =
-	    "img/mountain.png"
-	    |> Load_image.load_array
-	    |> Load_image.sub_image 0 0 (unit) (unit) (Some (0x00FFFF))
-	  in
-	  Graphics.draw_image test_draw xpos ypos
-	)
+	  Graphics.draw_image (draw_thing "mountain.png") xpos ypos
 	  
 	 (* Graphics.set_color 0x999999 *)
     in
