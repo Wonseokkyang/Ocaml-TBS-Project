@@ -99,3 +99,20 @@ program and to save the processed "screencap" saved into board_image. This
 way, when the screen has to be redrawn I can just use board_image instead of
 reprocessing tiles over and over.
   Lets give it a try!
+
+7/13/19 4:44PM
++Program only processes terrain png and builds the board just once at the
+start of the game. Every subsequent draw is taken from the Graphics image
+type that's been saved
+
+7/16/19 1:52AM
+  I was trying to neaten the code further (restructure the code to use
+a coordinate system to make implementing units and their position easier)
+and I ran into a problem. I use the Graphics module and some of it's 
+untions in my draw_screen file but I'm getting a "Fatal Error" because
+Graphics window has not been opened.. but it has in the main file. I think
+this is because the Graphics is opened in the main "g_test" file and the
+compiler doesn't link the call to Graphics in "draw_screen" to the "g_test"
+.. To solve this, I could move ALL of the graphics operations to the 
+"draw_screen" file.. I think..
+
