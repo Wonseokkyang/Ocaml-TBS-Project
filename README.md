@@ -22,7 +22,6 @@ game is to eliminte all enemy units using the units provided.
 There will be different unit types with different stats as well as different
 terrain types that will affect gameplay.
 
-
 I will list goals/milestones below and add/check them off as I progress.
 For a more detailed history check "changelog.txt".
 
@@ -30,30 +29,30 @@ I will first start by creating basic base elements and expanding upon it as
 the program gets built out.
 
 Ultimately, I want the program to fit a few criteria:
-	- [ ] 3-5 unit types               {HP, ATK, RNG, MV}
-	  - [-] Melee: basic attack unt    { 3, 1, 1, 1}
-	  - [ ] Range: increase atk range  { 2, 1, 2, 1}
-	  - [ ] Calvery: increase MV       { 2, 1, 1, 3}
-	- [X] User cursor to select grid and units
-	- [ ] Implimentation of simple move and attack AI
-	- [-] Different terrain types
+- [ ] 3-5 unit types               {HP, ATK, RNG, MV}
+  - [-] Melee: basic attack unt    { 3, 1, 1, 1}
+  - [ ] Range: increase atk range  { 2, 1, 2, 1}
+  - [ ] Calvery: increase MV       { 2, 1, 1, 3}
+- [X] User cursor to select grid and units
+- [ ] Implimentation of simple move and attack AI
+- [-] Different terrain types
 
 If I have enough time I'd like to accomplish:	
-	- [ ] A menu
-	  - [ ] Variable playable grid size
-	- [ ] An info panel displaying terrain and unit info of current tile to player  
-	- [ ] A pleasing GUI
-	- [ ] Different terrain effects
-	  - [ ] Forest: decrease attack range by 1
-	  - [ ] Mountain/Hills: decrease movement by 1 but increase range by 1
-	  - [ ] Water: If entered this turn, unit cannot attack
+- [ ] A menu
+  - [ ] Variable playable grid size
+- [ ] An info panel displaying terrain and unit info of current tile to player  
+- [ ] A pleasing GUI
+- [ ] Different terrain effects
+  - [ ] Forest: decrease attack range by 1
+  - [ ] Mountain/Hills: decrease movement by 1 but increase range by 1
+  - [ ] Water: If entered this turn, unit cannot attack
 
 Thing's that would be awesome but I probably won't be able to implement in time:
-	- [ ] Individual unit leveling
-	  - [ ] Increases in stats per level
-	  - [ ] Class upgrades with enough levels giving major buffs 
-	- [ ] Fog of war that hides parts of the map unless a player unit has occupied it
-	- [ ] Different levels/grid sets for the player to go through	
+- [ ] Individual unit leveling
+  - [ ] Increases in stats per level
+  - [ ] Class upgrades with enough levels giving major buffs 
+- [ ] Fog of war that hides parts of the map unless a player unit has occupied it
+- [ ] Different levels/grid sets for the player to go through	
 	
 
 Initial Steps:
