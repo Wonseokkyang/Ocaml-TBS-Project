@@ -1,14 +1,15 @@
 
-# Discontinued
+## **Discontinued**
 
-Name: Won Seok Yang
+Name: Won Seok Yang 
 Date: June 26, 2019
 
-====================
-To run the program:
+
+>To run the program:
+```
   "make"
   "./game"
-====================
+```
 
 
 Project
