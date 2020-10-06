@@ -1,5 +1,6 @@
+# Discontinued
+
 Name: Won Seok Yang
-Class: Functional Programming in Ocaml
 Date: June 26, 2019
 
 ====================
@@ -10,7 +11,7 @@ To run the program:
 
 
 Project
-For this class I will be making a turnbased RTS using Ocaml and it's builtin
+I will be making a turnbased RTS using Ocaml and it's builtin
 Graphics module. I will also be learning how to use github!
 
 I want to create a game where the player is presented with a gameboard of 
